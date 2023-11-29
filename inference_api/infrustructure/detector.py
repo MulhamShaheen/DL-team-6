@@ -86,7 +86,6 @@ class YoloDetector(DummyDetector):
         predictions = []
         results = self.model(img)
         for result in results[0].boxes.data:
-            # data = result.boxes.data[0]
 
             contour = Contour(bounding_rect=(result[0], result[1], result[2], result[3]))
             prediction = DetectorPrediction(contour, float(result[4]), int(result[-1]))
@@ -100,7 +99,7 @@ class YoloDetector(DummyDetector):
         video_dir = "media/videos/"
         os.makedirs(frames_dir,exist_ok=True)
         cap = cap_from_youtube(vid_url, resolution='720p')
-        start_time = 0
+        start_time = 5
         cap.set(cv2.CAP_PROP_POS_FRAMES, start_time * cap.get(cv2.CAP_PROP_FPS))
         count = 0
         height, width = 0, 0
@@ -111,7 +110,8 @@ class YoloDetector(DummyDetector):
                 break
             height, width, layers = frame.shape
             preds = self.detect_contours(frame)
-            res.append(preds)
+            if preds != []:
+                res.append(preds)
             for pred in preds:
                 data = pred.dict()
                 cv2.rectangle(frame, (int(pred.predicted_contour.x_min), int(pred.predicted_contour.y_min)),
