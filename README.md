@@ -54,6 +54,14 @@ Using Docker compose, the system can be started using the following steps:
 
 ![shorts_MjnhWCEmpbg](https://github.com/MulhamShaheen/DL-team-6/assets/74207896/7c9e51e4-66c6-4aad-91ad-8ebae462c499)
 
+#### Демонстрации работы API в postman
+
+![api.gif](images%2Fapi.gif)
+
+#### Главный экран веб-приложения
+
+![img.png](images/img.png)
+
 ### FAQ
 
 Здесь будут ответы на какие-нибудь вопросы, если такие возникнут
