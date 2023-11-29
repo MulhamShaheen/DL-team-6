@@ -1,5 +1,5 @@
-from django.forms import Form, FileField
+from django.forms import Form, FileField, TextInput
 
 
-class ImageForm(Form):
-    file = FileField(label="Microchip image", max_length=200)
+class VideoForm(Form):
+    file = TextInput()

@@ -1,30 +1,31 @@
 from celery import shared_task
 from .utils import draw_counters
-from .models import Chip
+from .models import Video
 import requests
 import os
 import json
 
 
 @shared_task
-def detect_problem(chip_id):
-    chip = Chip.objects.get(pk=chip_id)
-    chip.status = "PROCESS"
-    chip.save()
+def detect_problem(video_id):
+    video = Video.objects.get(pk=video_id)
+    video.status = "PROCESS"
+    video.save()
 
-    upload_path = chip.original_path
-    result_path = chip.result_path
-    files = {'file': open(upload_path, 'rb')}
+    upload_path = video.original_path
+    result_path = video.result_path
+
+    data = {'url': video.original_path}
 
     api = os.getenv("API_URL")
 
-    r = requests.post(f"http://{api}/file/", files=files)
+    r = requests.post(f"http://{api}/video/", )
     data = r.json()["results"]
-    draw_counters(upload_path, result_path, data, chip_id)
-    chip.status = "DONE"
-    chip.save()
+    draw_counters(upload_path, result_path, data, video_id)
+    video.status = "DONE"
+    video.save()
 
-    return chip_id
+    return video_id
 
 
 @shared_task
