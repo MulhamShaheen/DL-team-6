@@ -1,0 +1,45 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Camera</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body>
+<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+        <img class="mx-auto h-16 w-auto" src="https://img.freepik.com/free-vector/blank-green-traffic-road-sign-vector-illustration_1284-41937.jpg?w=996&t=st=1701270915~exp=1701271515~hmac=4afa7cffd197f91114b79a6a70dc793aad45cd7c2a39fcc3bee1777775afc590" alt="Your Company">
+    </div>
+
+    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <form action="{% url 'main' %}" method="post" class="post-form items-center flex flex-col gap-y-6"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if error %}
+                <p class="text-red-900">{{ error }} </p>
+            {% endif %}
+            <div class="col-span-full">
+                <label for="url"
+                       class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
+                    <span class="text-black">Input <span class="text-red-600">youtube</span> url</span>
+                </label>
+                <input id="url" name="url" type="text" class="border-2">
+            </div>
+
+
+            <button type="submit"
+                    class="flex w-60 justify-center rounded-md bg-black px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                submit
+            </button>
+        </form>
+    </div>
+</div>
+
+</body>
+
+
+</html>

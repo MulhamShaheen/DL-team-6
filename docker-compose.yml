@@ -1,0 +1,44 @@
+version: "2.1"
+services:
+  rabbitmq:
+    image: rabbitmq:3.10.7-management
+    hostname: rabbitmq
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit log_levels [{connection,error},{default,error}] disk_free_limit 2147483648
+    ports:
+      - 15672:15672
+      - 5672:5672
+  api:
+    build: ../inference_api
+    hostname: inference
+    command: uvicorn main:app --host 0.0.0.0
+    volumes:
+      - ./inference_api:/api
+    ports:
+      - 8008:8000
+
+  web:
+    build: ../web_app
+    command:  python manage.py runserver 0.0.0.0:8000
+    environment:
+      - API_URL=inference:8000
+    volumes:
+      - ./web_app/:/app
+    ports:
+      - 8000:8000
+
+  celery_worker:
+    build: ../web_app
+    command: celery -A web_app  worker -l info
+    volumes:
+      - ./web_app/:/app
+    environment:
+      - API_URL=inference:8000
+    depends_on:
+      - web
+      - rabbitmq
+
+#celery -A web_chip_checker  worker -l info --concurrency=2 --without-gossip --pool=solo
